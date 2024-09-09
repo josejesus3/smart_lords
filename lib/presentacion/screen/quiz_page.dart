@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_lords/classes/question.dart';
 import 'package:smart_lords/classes/quiz.dart';
+import 'package:smart_lords/presentacion/screen/result_page.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -57,8 +58,45 @@ class _QuizPageState extends State<QuizPage> {
     progresIndex += 1;
     if (questionIndex < totalOptions - 1) {
       questionIndex += 1;
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => _buildResultDialog(context),
+      );
     }
     setState(() {});
+  }
+
+  Widget _buildResultDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text(
+        'Resultados',
+      ),
+      backgroundColor: Theme.of(context).primaryColorDark,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Preguntas Totales: $totalQuestion'),
+          Text('Correctas: ${quiz.right}'),
+          Text('Incorrectas: ${totalQuestion - quiz.right}'),
+          Text('Porsentaje: ${quiz.percet}%'),
+        ],
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop;
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ResultPage(),
+                ),
+              );
+            },
+            child: const Text('Ver Rspuestas'))
+      ],
+    );
   }
 
   @override
