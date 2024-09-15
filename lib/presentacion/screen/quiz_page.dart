@@ -90,7 +90,9 @@ class _QuizPageState extends State<QuizPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ResultPage(),
+                  builder: (context) => ResultPage(
+                    quiz: quiz,
+                  ),
                 ),
               );
             },
