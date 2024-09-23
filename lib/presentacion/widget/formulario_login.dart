@@ -6,7 +6,6 @@ class FormularioLogin extends StatelessWidget {
   const FormularioLogin({super.key});
 
   @override
-  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -39,18 +38,16 @@ class FormularioLogin extends StatelessWidget {
           color: const Color(0xFFCEEBFF),
           boxShadow: [
             BoxShadow(
-              color: Colors.black
-                  .withOpacity(0.3), // Color de la sombra con opacidad
-              offset: const Offset(
-                  -4, 8), // Desplazamiento hacia la izquierda y abajo
-              blurRadius: 10, // Nivel de desenfoque de la sombra
-              spreadRadius: 2, // Extensión de la sombra
+              color: Colors.black.withOpacity(0.3),
+              offset: const Offset(-4, 8), // Sombra
+              blurRadius: 10,
+              spreadRadius: 2,
             ),
           ],
         ),
         child: const Center(
           child: Text(
-            'Create an Account',
+            'Login to Your Account', // Cambio a "Login"
             style: TextStyle(color: Colors.black38, fontSize: 25),
           ),
         ),
@@ -73,14 +70,17 @@ class FormularioLogin extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(),
+              SizedBox(
+                height: 50,
+              ),
               for (var field in [
-                {'label': 'Username', 'icon': Icons.person_outline},
-                {'label': 'Email', 'icon': Icons.email_outlined},
+                {
+                  'label': 'Email',
+                  'icon': Icons.email_outlined
+                }, // Cambié el campo "Username" a "Email"
                 {'label': 'Password', 'icon': Icons.lock_outline},
-                {'label': 'Confirm Password', 'icon': Icons.lock_outline},
               ])
                 _MyCustomFormField(
                   label: field['label'].toString(),
@@ -90,10 +90,13 @@ class FormularioLogin extends StatelessWidget {
                         )
                       : null,
                 ),
-              const SizedBox(height: 30),
-              _buildSignUpButton(),
-              const SizedBox(height: 10),
-              _buildLoginRow(context),
+              // ignore: prefer_const_constructors
+              SizedBox(
+                height: 30,
+              ),
+              _buildLoginButton(context), // Cambié a "_buildLoginButton()"
+
+              _buildSignupRow(context), // Cambié a "_buildSignupRow()"
             ],
           ),
         ),
@@ -101,53 +104,37 @@ class FormularioLogin extends StatelessWidget {
     );
   }
 
-  ElevatedButton _buildSignUpButton() {
+  ElevatedButton _buildLoginButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Implement your signup functionality here
+        Navigator.pushNamed(context, '/home-page');
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: const Color(0xFFCEEBFF),
       ),
-      child: const Text('Sign Up', style: TextStyle(color: Colors.black)),
+      child: const Text('Log In',
+          style: TextStyle(color: Colors.black)), // Cambiado a "Log In"
     );
   }
 
-  Widget _buildLoginRow(BuildContext context) {
-    return Column(
+  Widget _buildSignupRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Already have an account?'),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/formulario-login');
-              },
-              child: const Text(
-                'Log In',
-                style: TextStyle(
-                    color: Colors.black, decoration: TextDecoration.underline),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          width: 280,
-          height: 25,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset(
-                'assets/google.png',
-              ),
-              Image.asset('assets/facebook.png'),
-              Image.asset('assets/apple.png'),
-            ],
+        const Text('Don\'t have an account?'),
+        TextButton(
+          onPressed: () {
+            Navigator.pushNamed(
+                context, '/formulario'); // Cambié la ruta a la de registro
+          },
+          child: const Text(
+            'Sign Up',
+            style: TextStyle(
+                color: Colors.black, decoration: TextDecoration.underline),
           ),
-        )
+        ),
       ],
     );
   }
