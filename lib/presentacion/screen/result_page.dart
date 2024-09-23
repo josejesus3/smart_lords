@@ -17,6 +17,8 @@ class ResultPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            Text('Preguntas: ${quiz.questions.length}'),
+            Text('Preguntas: ${quiz.percet}%'),
             Container(
               padding: const EdgeInsets.only(left: 40),
               margin:
@@ -27,34 +29,36 @@ class ResultPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('Preguntas: ${quiz.questions.length}'),
-                  Text('Preguntas: ${quiz.percet}%'),
                   Expanded(
-                      child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: quiz.questions.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: quiz.questions[index].corret
-                            ? Colors.green.shade200
-                            : Colors.red.shade200,
-                        child: ListTile(
-                          leading: quiz.questions[index].corret
-                              ? Icon(
-                                  Icons.check,
-                                  color: Colors.green.shade900,
-                                )
-                              : Icon(
-                                  Icons.close,
-                                  color: Colors.red.shade900,
-                                ),
-                          title: Text(quiz.questions[index].question),
-                          subtitle: Text(quiz.questions[index].selectd),
-                          trailing: Text(quiz.questions[index].aswer),
-                        ),
-                      );
-                    },
-                  ))
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: quiz.questions.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          color: quiz.questions[index].corret
+                              ? Colors.green.shade200
+                              : Colors.red.shade200,
+                          child: ListTile(
+                            leading: quiz.questions[index].corret
+                                ? Icon(
+                                    Icons.check,
+                                    //color: Colors.green.shade900,
+                                  )
+                                : Icon(
+                                    Icons.close,
+                                    //color: Colors.red.shade900,
+                                  ),
+                            title: Text(quiz.questions[index].question),
+                            subtitle: Text(quiz.questions[index].selectd),
+                            trailing: Text(
+                              quiz.questions[index].aswer,
+                              style: TextStyle(color: Colors.green.shade900),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
             )
