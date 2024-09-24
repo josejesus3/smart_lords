@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Smart Lords'),
         backgroundColor: const Color(0xFFCEEBFF),
         actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications),
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
@@ -24,100 +29,150 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: const Color(0xFF80CBC4),
-              ),
-              child: Text(
-                'Menú Principal',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+            SizedBox(
+              height: 280,
+              child: DrawerHeader(
+                decoration: const BoxDecoration(color: Color(0xFF80CBC4)),
+                child: Column(
+                  children: [
+                    const CircleAvatar(radius: 40),
+                    const SizedBox(height: 10),
+                    const Text('Nombre de Usuario'),
+                    const Text('Estado (Región)'),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        5,
+                        (index) => const Icon(Icons.flash_on,
+                            color: Colors.yellow, size: 30),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Perfil'),
-              onTap: () {
-                Navigator.pushNamed(context, '/profile-page');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text('Notificaciones'),
-              onTap: () {
-                Navigator.pushNamed(context, '/notifications-page');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configuración'),
-              onTap: () {
-                Navigator.pushNamed(context, '/settings-page');
-              },
-            ),
+            ..._buildDrawerItems(context),
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 60, bottom: 50),
-              child: Image.asset('assets/mundo.png'),
-            ),
-            Card(
-              margin: const EdgeInsets.all(20),
-              child: ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(10),
-                children: [
-                  Container(
-                    height: 50,
-                    margin: const EdgeInsets.only(top: 10, bottom: 25),
-                    child: const Center(
-                      child: Text(
-                        'Smart Lords',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  _buildOutlinedButton(context, 'Iniciar Juego', '/quiz-page'),
-                  _buildOutlinedButton(
-                      context, 'Repasar Quiz', '/review-pages'),
-                ],
-              ),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          _buildHeaderImage(size),
+          _buildQuizButton(
+              context,
+              size,
+              'Start Quiz',
+              'Test Question',
+              'Question for evaluating knowledge on a topic',
+              const Color.fromARGB(181, 28, 116, 204)),
+          _buildQuizButton(
+              context,
+              size,
+              'Start Duels',
+              'Training Duels',
+              'Engage in intense training duels to enhance your skills and strategies. Challenge your friends and become a master to achieve victory!',
+              const Color.fromARGB(255, 177, 174, 174)),
+        ],
       ),
     );
   }
 
-  Widget _buildOutlinedButton(
-      BuildContext context, String label, String route) {
+  List<Widget> _buildDrawerItems(BuildContext context) {
+    return [
+      _buildDrawerItem(context, Icons.person, 'Editar Perfil', '/profile-page'),
+      _buildDrawerItem(
+          context, Icons.settings, 'Configuración', '/settings-page'),
+      _buildDrawerItem(context, Icons.chat, 'Chat', '/chat-page'),
+    ];
+  }
+
+  Widget _buildDrawerItem(
+      BuildContext context, IconData icon, String title, String route) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: () => Navigator.pushNamed(context, route),
+    );
+  }
+
+  Widget _buildHeaderImage(Size size) {
     return Container(
+      width: size.width,
+      height: 250,
       margin: const EdgeInsets.only(bottom: 10),
-      child: OutlinedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, route);
-        },
-        style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.indigo.shade100,
-          elevation: 4,
-          side: const BorderSide(width: 4.0),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5F5DC),
+        borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(0.4),
+              offset: const Offset(-3, 6),
+              blurRadius: 8,
+              spreadRadius: 1),
+        ],
+      ),
+      child: Image.asset('assets/mundo.png'),
+    );
+  }
+
+  Widget _buildQuizButton(BuildContext context, Size size, String label,
+      String title, String description, Color color) {
+    return Container(
+      width: size.width,
+      height: 210,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration:
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(20)),
+      child: _buildOutlinedButton(
+          context, label, title, description, '/quiz-page'),
+    );
+  }
+
+  Widget _buildOutlinedButton(BuildContext context, String label, String title,
+      String description, String route) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: SizedBox(
+        height: 170,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            Expanded(
+              child: Container(
+                width: 247,
+                child: Text(description,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)),
+              ),
+            ),
+            SizedBox(
+              width: 130,
+              child: OutlinedButton(
+                onPressed: () => Navigator.pushNamed(context, route),
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+                child: Text(label,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500)),
+              ),
+            ),
+          ],
         ),
       ),
     );
