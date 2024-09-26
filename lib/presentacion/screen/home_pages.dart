@@ -80,7 +80,8 @@ class HomePage extends StatelessWidget {
 
   List<Widget> _buildDrawerItems(BuildContext context) {
     return [
-      _buildDrawerItem(context, Icons.person, 'Editar Perfil', '/profile-page'),
+      _buildDrawerItem(
+          context, Icons.person, 'Editar Perfil', '/editar-perfil'),
       _buildDrawerItem(
           context, Icons.settings, 'Configuración', '/settings-page'),
       _buildDrawerItem(context, Icons.chat, 'Chat', '/chat-page'),
